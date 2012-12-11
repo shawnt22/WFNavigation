@@ -7,8 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "BaseViewController.h"
 
 @implementation AppDelegate
+@synthesize wfNavigationController;
 
 - (void)dealloc
 {
@@ -22,7 +24,26 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    
+    WFNavigationController *_nav = [[WFNavigationController alloc] init];
+    [self.window setRootViewController:_nav];
+    self.wfNavigationController = _nav;
+    [_nav release];
+    
+    UIButton *_push = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    _push.frame = CGRectMake(ceilf((self.wfNavigationController.view.bounds.size.width - 100)/2), 200, 100, 44);
+    _push.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [_push setTitle:@"push" forState:UIControlStateNormal];
+    [_push addTarget:self action:@selector(pushItemAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.wfNavigationController.view addSubview:_push];
+    
     return YES;
+}
+- (void)pushItemAction:(id)sender {
+    BaseViewController *_item = [[BaseViewController alloc] init];
+    [self.wfNavigationController pushItem:_item Direction:[BaseViewController gestureDirection] Type:[BaseViewController animationType] Animated:YES];
+    [_item release];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

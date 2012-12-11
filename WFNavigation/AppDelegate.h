@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WFNavigationController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, assign) WFNavigationController *wfNavigationController;
 
 @end

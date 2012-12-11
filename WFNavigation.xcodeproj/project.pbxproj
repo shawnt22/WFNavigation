@@ -16,6 +16,10 @@
 		9C4A94DC1676D21700F17C90 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4A94DB1676D21700F17C90 /* Default.png */; };
 		9C4A94DE1676D21700F17C90 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4A94DD1676D21700F17C90 /* Default@2x.png */; };
 		9C4A94E01676D21700F17C90 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C4A94DF1676D21700F17C90 /* Default-568h@2x.png */; };
+		9C4A94E71676D22900F17C90 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4A94E61676D22900F17C90 /* QuartzCore.framework */; };
+		9C4A94EA1676D25D00F17C90 /* WFNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A94E91676D25D00F17C90 /* WFNavigationController.m */; };
+		9C4A94ED1676D27600F17C90 /* WFItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A94EC1676D27600F17C90 /* WFItemController.m */; };
+		9C4A94F41676D45800F17C90 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A94F31676D45800F17C90 /* BaseViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,14 @@
 		9C4A94DB1676D21700F17C90 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		9C4A94DD1676D21700F17C90 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		9C4A94DF1676D21700F17C90 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		9C4A94E61676D22900F17C90 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9C4A94E81676D25D00F17C90 /* WFNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFNavigationController.h; sourceTree = "<group>"; };
+		9C4A94E91676D25D00F17C90 /* WFNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFNavigationController.m; sourceTree = "<group>"; };
+		9C4A94EB1676D27600F17C90 /* WFItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFItemController.h; sourceTree = "<group>"; };
+		9C4A94EC1676D27600F17C90 /* WFItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFItemController.m; sourceTree = "<group>"; };
+		9C4A94EE1676D28900F17C90 /* WFControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFControllerProtocol.h; sourceTree = "<group>"; };
+		9C4A94F21676D45800F17C90 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		9C4A94F31676D45800F17C90 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C4A94E71676D22900F17C90 /* QuartzCore.framework in Frameworks */,
 				9C4A94CA1676D21700F17C90 /* UIKit.framework in Frameworks */,
 				9C4A94CC1676D21700F17C90 /* Foundation.framework in Frameworks */,
 				9C4A94CE1676D21700F17C90 /* CoreGraphics.framework in Frameworks */,
@@ -51,6 +64,7 @@
 		9C4A94BA1676D21600F17C90 = {
 			isa = PBXGroup;
 			children = (
+				9C4A94E61676D22900F17C90 /* QuartzCore.framework */,
 				9C4A94CF1676D21700F17C90 /* WFNavigation */,
 				9C4A94C81676D21700F17C90 /* Frameworks */,
 				9C4A94C61676D21700F17C90 /* Products */,
@@ -80,6 +94,9 @@
 			children = (
 				9C4A94D81676D21700F17C90 /* AppDelegate.h */,
 				9C4A94D91676D21700F17C90 /* AppDelegate.m */,
+				9C4A94F21676D45800F17C90 /* BaseViewController.h */,
+				9C4A94F31676D45800F17C90 /* BaseViewController.m */,
+				9C4A94F11676D36900F17C90 /* WFController */,
 				9C4A94D01676D21700F17C90 /* Supporting Files */,
 			);
 			path = WFNavigation;
@@ -97,6 +114,18 @@
 				9C4A94DF1676D21700F17C90 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C4A94F11676D36900F17C90 /* WFController */ = {
+			isa = PBXGroup;
+			children = (
+				9C4A94EE1676D28900F17C90 /* WFControllerProtocol.h */,
+				9C4A94E81676D25D00F17C90 /* WFNavigationController.h */,
+				9C4A94E91676D25D00F17C90 /* WFNavigationController.m */,
+				9C4A94EB1676D27600F17C90 /* WFItemController.h */,
+				9C4A94EC1676D27600F17C90 /* WFItemController.m */,
+			);
+			name = WFController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +195,9 @@
 			files = (
 				9C4A94D61676D21700F17C90 /* main.m in Sources */,
 				9C4A94DA1676D21700F17C90 /* AppDelegate.m in Sources */,
+				9C4A94EA1676D25D00F17C90 /* WFNavigationController.m in Sources */,
+				9C4A94ED1676D27600F17C90 /* WFItemController.m in Sources */,
+				9C4A94F41676D45800F17C90 /* BaseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
