@@ -14,6 +14,7 @@
 @interface WFNavigationController : UIViewController <UIGestureRecognizerDelegate, WFAnimationDelegate>
 @property (nonatomic, assign) id<WFGestureDelegate> gestureDelegate;
 
+- (id)initWithRootItem:(WFItemController *)item;
 - (void)pushItem:(WFItemController *)item Direction:(WFGestureDirection)direction Type:(WFNavigationAnimationType)type Animated:(BOOL)animated;
 - (void)popItem:(WFItemController *)item Animated:(BOOL)animated;
 
@@ -26,7 +27,11 @@
 
 
 #pragma mark - WFAnimation
-@interface WFAnimation : NSObject
+@interface WFAnimation : NSObject {
+@protected
+    BOOL _isAnimating;
+}
+@property (nonatomic, readonly) BOOL isAnimating;
 - (id)initWithNavigationController:(WFNavigationController<WFAnimationDelegate> *)navigation;
 - (void)pushItem:(WFItemController *)item Animated:(BOOL)animated;
 - (void)popItem:(WFItemController *)item Animated:(BOOL)animated;

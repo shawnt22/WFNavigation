@@ -12,6 +12,7 @@
 #pragma mark - Interface
 @interface WFNavigationController ()
 @property (nonatomic, retain) NSMutableArray *itemStack;
+@property (nonatomic, assign) WFItemController *rootItem;
 
 @property (nonatomic, readonly) WFItemController *currentItem;
 @property (nonatomic, retain) WFAnimation *wfAnimation;
@@ -23,6 +24,7 @@
 - (void)addItemToStack:(WFItemController *)item Direction:(WFGestureDirection)direction Type:(WFNavigationAnimationType)type;
 - (void)removeItemFromStack:(WFItemController *)item;
 
+- (BOOL)isRootItem:(WFItemController *)item;
 - (WFAnimation *)animationWithType:(WFNavigationAnimationType)type;
 @end
 
@@ -41,12 +43,20 @@
 
 #pragma mark - Implementation
 @implementation WFNavigationController
-@synthesize itemStack;
+@synthesize itemStack, rootItem;
 @synthesize currentItem;
 @synthesize gestureDelegate, originalPoint, currentPoint, isHorizontalUpdate;
 @synthesize wfAnimation;
 
 #pragma mark init
+- (id)initWithRootItem:(WFItemController *)item {
+    self = [self init];
+    if (self) {
+        self.rootItem = item;
+        [self pushItem:item Direction:WFGestureLeft Type:WFNavigationAnimationSmooth Animated:NO];
+    }
+    return self;
+}
 - (id)init {
     self = [super init];
     if (self) {
@@ -70,6 +80,9 @@
 }
 
 #pragma mark item stack
+- (BOOL)isRootItem:(WFItemController *)item {
+    return item == self.rootItem ? YES : NO;
+}
 - (void)addItemToStack:(WFItemController *)item Direction:(WFGestureDirection)direction Type:(WFNavigationAnimationType)type {
     if (!item) {
         return;
@@ -111,6 +124,9 @@
 }
 - (void)popItem:(WFItemController *)item Animated:(BOOL)animated {
     if (!item) {
+        return;
+    }
+    if ([self isRootItem:item]) {
         return;
     }
     self.wfAnimation = [self animationWithType:item.animationType];
@@ -184,6 +200,12 @@
     [self.wfAnimation regulateCurrentItemWithGesture:gesture Aniamted:YES];
 }
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (self.wfAnimation.isAnimating) {
+        return NO;
+    }
+    if ([self isRootItem:self.currentItem]) {
+        return NO;
+    }
     return [self notifyGestureManager:self shouldBeginGesture:gestureRecognizer];
 }
 - (void)notifyGestureManager:(id)manager beganGesture:(UIGestureRecognizer *)gesture {
@@ -250,6 +272,7 @@
 - (CGFloat)deltaWhileUpdate;
 @end
 @implementation WFAnimation
+@synthesize isAnimating = _isAnimating;
 @synthesize visiableFrame, unvisiableFrame;
 @synthesize currentItem;
 @synthesize view;
@@ -307,11 +330,19 @@
     [self.view addSubview:item.view];
 }
 - (void)pushItem:(WFItemController *)item Animated:(BOOL)animated {}
-- (void)pushAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {}
-- (void)finishPushAnimation {}
+- (void)pushAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {
+    _isAnimating = YES;
+}
+- (void)finishPushAnimation {
+    _isAnimating = NO;
+}
 - (void)popItem:(WFItemController *)item Animated:(BOOL)animated {};
-- (void)popAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {}
-- (void)finishPopAnimation:(WFItemController *)item {}
+- (void)popAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {
+    _isAnimating = YES;
+}
+- (void)finishPopAnimation:(WFItemController *)item {
+    _isAnimating = NO;
+}
 
 - (CGFloat)deltaWhileUpdate {
     CGFloat _delta = 0.0;
@@ -483,6 +514,7 @@
     [self pushAnimationWithItem:item Animated:animated];
 }
 - (void)pushAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {
+    [super pushAnimationWithItem:item Animated:animated];
     if (animated) {
         [UIView animateWithDuration:self.animationDuration
                          animations:^{
@@ -499,6 +531,7 @@
     }
 }
 - (void)finishPushAnimation {
+    [super finishPushAnimation];
     [self removeScreenshotLayer];
     [self notifyAnimation:self finishAnimation:YES];
 }
@@ -513,6 +546,7 @@
     [self popAnimationWithItem:item Animated:animated];
 }
 - (void)popAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {
+    [super popAnimationWithItem:item Animated:animated];
     if (animated) {
         [UIView animateWithDuration:self.animationDuration
                          animations:^{
@@ -529,6 +563,7 @@
     }
 }
 - (void)finishPopAnimation:(WFItemController *)item {
+    [super finishPopAnimation:item];
     [self hideItemController:self.currentItem];
     [self.wfNavigationController removeItemFromStack:item];
     [self showItemController:self.currentItem];
@@ -583,6 +618,7 @@
     [self pushAnimationWithItem:item Animated:animated];
 }
 - (void)pushAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {
+    [super pushAnimationWithItem:item Animated:animated];
     if (animated) {
         [UIView animateWithDuration:self.animationDuration
                          animations:^{
@@ -599,6 +635,7 @@
     }
 }
 - (void)finishPushAnimation {
+    [super finishPushAnimation];
     [self hideItemController:self.currentItem.parentItem];
     [self notifyAnimation:self finishAnimation:YES];
 }
@@ -612,6 +649,7 @@
     [self popAnimationWithItem:item Animated:animated];
 }
 - (void)popAnimationWithItem:(WFItemController *)item Animated:(BOOL)animated {
+    [super popAnimationWithItem:item Animated:animated];
     if (animated) {
         [UIView animateWithDuration:self.animationDuration
                          animations:^{
@@ -628,6 +666,7 @@
     }
 }
 - (void)finishPopAnimation:(WFItemController *)item {
+    [super finishPopAnimation:item];
     [self hideItemController:self.currentItem];
     [self.wfNavigationController removeItemFromStack:item];
     
