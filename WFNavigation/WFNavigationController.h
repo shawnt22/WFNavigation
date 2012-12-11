@@ -6,6 +6,16 @@
 //  Copyright (c) 2012年 shawnt22@gmail.com. All rights reserved.
 //
 
+/****
+ 
+ 未解决问题 :
+ 
+ 1. 设备旋转后的布局
+ 2. pile效果时的截屏时机
+ 3. visiableFrame的自定义，目前只支持满屏的controller更迭
+ 
+ ****/
+
 #import <Foundation/Foundation.h>
 #import "WFControllerProtocol.h"
 
