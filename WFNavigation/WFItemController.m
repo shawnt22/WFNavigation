@@ -51,7 +51,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+- (NSInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 @end
 
