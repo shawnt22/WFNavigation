@@ -25,7 +25,6 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    
     BaseViewController *_item = [[BaseViewController alloc] init];
     WFNavigationController *_nav = [[WFNavigationController alloc] initWithRootItem:_item];
     [_item release];
@@ -33,19 +32,7 @@
     self.wfNavigationController = _nav;
     [_nav release];
     
-//    UIButton *_push = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    _push.frame = CGRectMake(ceilf((self.wfNavigationController.view.bounds.size.width - 100)/2), 200, 100, 44);
-//    _push.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-//    [_push setTitle:@"push" forState:UIControlStateNormal];
-//    [_push addTarget:self action:@selector(pushItemAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.wfNavigationController.view addSubview:_push];
-    
     return YES;
-}
-- (void)pushItemAction:(id)sender {
-    BaseViewController *_item = [[BaseViewController alloc] init];
-    [self.wfNavigationController pushItem:_item Direction:[BaseViewController gestureDirection] Type:[BaseViewController animationType] Animated:YES];
-    [_item release];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

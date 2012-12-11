@@ -701,13 +701,22 @@
 #pragma mark - WFAnimation Layer
 @interface WFAnimationLayer ()
 @property (nonatomic, assign) CGRect originalFrame;
+@property (nonatomic, assign) UIView *coverView;
 @end
 @implementation WFAnimationLayer
 @synthesize originalFrame;
+@synthesize coverView;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.originalFrame = frame;
+        
+        UIView *_c = [[UIView alloc] initWithFrame:self.bounds];
+        _c.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+        _c.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self addSubview:_c];
+        self.coverView = _c;
+        [_c release];
     }
     return self;
 }
@@ -717,6 +726,8 @@
     CGRect _f = self.originalFrame;
     _f = CGRectInset(_f, _inset, _inset);
     self.frame = _f;
+    
+    self.coverView.alpha = proportion;
 }
 @end
 
