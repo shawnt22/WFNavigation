@@ -20,13 +20,22 @@
 #import "WFControllerProtocol.h"
 
 #pragma mark - WFBoard Controller
+@class WFNavigationController;
 @class WFItemController;
+@protocol WFNavigationControllerDelegate <NSObject>
+@optional
+- (void)navigationController:(WFNavigationController *)navigation didFinishAnimation:(BOOL)isPush Item:(WFItemController *)item;
+@end
+
 @interface WFNavigationController : UIViewController <UIGestureRecognizerDelegate, WFAnimationDelegate>
 @property (nonatomic, assign) id<WFGestureDelegate> gestureDelegate;
 
 - (id)initWithRootItem:(WFItemController *)item;
 - (void)pushItem:(WFItemController *)item Direction:(WFGestureDirection)direction Type:(WFNavigationAnimationType)type Animated:(BOOL)animated;
 - (void)popItem:(WFItemController *)item Animated:(BOOL)animated;
+
+- (void)addObserver:(id<WFNavigationControllerDelegate>)observer;
+- (void)removeObserver:(id<WFNavigationControllerDelegate>)observer;
 
 @end
 
@@ -42,7 +51,8 @@
     BOOL _isAnimating;
 }
 @property (nonatomic, readonly) BOOL isAnimating;
-- (id)initWithNavigationController:(WFNavigationController<WFAnimationDelegate> *)navigation;
+@property (nonatomic, assign) id<WFAnimationDelegate> animationDelegate;
+- (id)initWithNavigationController:(WFNavigationController *)navigation;
 - (void)pushItem:(WFItemController *)item Animated:(BOOL)animated;
 - (void)popItem:(WFItemController *)item Animated:(BOOL)animated;
 

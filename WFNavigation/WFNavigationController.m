@@ -11,6 +11,8 @@
 
 #pragma mark - Interface
 @interface WFNavigationController ()
+@property (nonatomic, retain) NSMutableSet *observers;
+
 @property (nonatomic, retain) NSMutableArray *itemStack;
 @property (nonatomic, assign) WFItemController *rootItem;
 
@@ -39,6 +41,10 @@
 - (void)notifyGestureManager:(id)manager endedGesture:(UIGestureRecognizer *)gesture;
 - (void)notifyGestureManager:(id)manager canceledGesture:(UIGestureRecognizer *)gesture;
 - (BOOL)notifyGestureManager:(id)manager shouldBeginGesture:(UIGestureRecognizer *)gesture;
+@end
+
+@interface WFNavigationController (Observer)
+- (void)notifyNavigationController:(WFNavigationController *)navigation didFinishAnimation:(BOOL)isPush Item:(WFItemController *)item;
 @end
 
 #pragma mark - Implementation
@@ -83,6 +89,14 @@
 }
 - (NSInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark observer
+- (void)addObserver:(id<WFNavigationControllerDelegate>)observer {
+    [self.observers addObject:observer];
+}
+- (void)removeObserver:(id<WFNavigationControllerDelegate>)observer {
+    [self.observers removeObject:observer];
 }
 
 #pragma mark item stack
@@ -142,6 +156,18 @@
     self.wfAnimation = nil;
 }
 
+@end
+
+#pragma mark - Observer
+@implementation WFNavigationController (Observer)
+- (void)notifyNavigationController:(WFNavigationController *)navigation didFinishAnimation:(BOOL)isPush Item:(WFItemController *)item {
+    NSArray *_obvs = [self.observers allObjects];
+    for (id<WFNavigationControllerDelegate> _obv in _obvs) {
+        if (_obv && [_obv respondsToSelector:@selector(navigationController:didFinishAnimation:Item:)]) {
+            [_obv navigationController:navigation didFinishAnimation:isPush Item:item];
+        }
+    }
+}
 @end
 
 #pragma mark - Gesture
@@ -283,6 +309,7 @@
 @synthesize currentItem;
 @synthesize view;
 @synthesize animationDuration;
+@synthesize animationDelegate;
 
 - (id)initWithNavigationController:(WFNavigationController *)navigation {
     self = [super init];
@@ -293,8 +320,8 @@
     return self;
 }
 - (void)notifyAnimation:(WFAnimation *)animation finishAnimation:(BOOL)isPush {
-    if (self.wfNavigationController && [self.wfNavigationController respondsToSelector:@selector(animation:finishAnimation:)]) {
-        [self.wfNavigationController animation:animation finishAnimation:isPush];
+    if (self.animationDelegate && [self.animationDelegate respondsToSelector:@selector(animation:finishAnimation:)]) {
+        [self.animationDelegate animation:animation finishAnimation:isPush];
     }
 }
 - (WFItemController *)currentItem {
